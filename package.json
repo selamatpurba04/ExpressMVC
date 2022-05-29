@@ -1,0 +1,29 @@
+{
+  "name": "palador",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "start": "node ./src/server/index.js",
+    "dev": "nodemon ./src/server/index.js | bunyan"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "bunyan": "^1.8.15",
+    "change-case": "^3.0.2",
+    "dotenv": "^16.0.1",
+    "es6-error": "^4.1.1",
+    "express": "^4.16.3",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
+    "swagger-ui-express": "^3.0.10",
+    "uuid": "^3.3.2",
+    "yamljs": "^0.3.0"
+  }
+}
