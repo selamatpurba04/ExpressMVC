@@ -1,4 +1,4 @@
-# Express MVC
+# SimpleExpress
 - NodeJS Framework : <a href="http://expressjs.com/">Express JS</a>
 
 ## Getting Started
