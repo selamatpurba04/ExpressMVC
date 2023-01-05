@@ -8,10 +8,20 @@ const { EmploymentService } = require('../services');
  * @returns {promise} - return next function
  */
 const services = (req, res, next) => {
+  const {
+    app: {
+      locals: {
+        config,
+        logger,
+        employees
+      }
+    }
+  } = req;
+
   res.locals.employmentService = new EmploymentService({
-    config: req.app.locals.config,
-    logger: req.app.locals.logger,
-    dataEmployees: req.app.locals.employees
+    config,
+    logger,
+    dataEmployees: employees
   });
 
   return next();

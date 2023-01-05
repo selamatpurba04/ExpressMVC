@@ -8,9 +8,22 @@ const os = require('os');
  * @returns {promise}       whatever "next" returns
  */
 const healthcheckHandler = async (req, res, next) => {
+  const {
+    req: {
+      app: {
+        locals: {
+          config: {
+            name,
+            api: { version }
+          }
+        }
+      }
+    }
+  } = req;
+
   res.send({
-    name: req.app.locals.config.name,
-    version: req.app.locals.config.api.version,
+    name,
+    version,
     uptime: os.uptime()
   });
   return next();

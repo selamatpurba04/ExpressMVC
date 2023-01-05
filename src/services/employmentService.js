@@ -2,7 +2,6 @@ const { report } = require('process');
 const { throwIfMissing } = require('../lib');
 const { SystemError, ConflictError, NotFoundError } = require('../lib');
 
-
 /**
  * EmploymentService
  */
@@ -30,6 +29,7 @@ class EmploymentService {
     if (i) {
       employee = this.dataEmployees.findIndex(e => e.employeeId == id);
     }
+
     return employee;
   }
 
@@ -39,18 +39,19 @@ class EmploymentService {
    * @param {array} allReporters - array of reporters
    * @returns {array} reporters
    */
-  findReporter(id, allReporters = []) {
+  findReporter(id) {
     let reporters = this.dataEmployees.filter(e => e.managerId == id);
     if (reporters) {
-      for ( var i in reporters) {
+      for (let i in reporters) {
         let reporter = reporters[i];
-        const anotherReporter = this.findReporter(reporter.employeeId, reporter);
+        const anotherReporter = this.findReporter(reporter.employeeId);
         if (anotherReporter.length) {
           reporter.directReports = anotherReporter;
         }
       }
-      return reporters;
     }
+
+    return reporters;
   }
 
   /**
@@ -60,7 +61,6 @@ class EmploymentService {
    * @returns {object} response of employee
    */
    employee(id, includeReportingTree) {
-
     try {
       let res;
       const employee = this.findEmployee(id);
@@ -92,7 +92,6 @@ class EmploymentService {
    * @returns {object} response of listEmployees
    */
   listEmployees() {
-
     try {
       return this.dataEmployees;
     } catch (error) {
@@ -116,7 +115,6 @@ class EmploymentService {
 
     try {
       let res;
-
       const checkExistedEmployee = this.findEmployee(employeeId);
       if (!checkExistedEmployee) {
         const checkExistedManager = this.findEmployee(managerId);
@@ -126,9 +124,7 @@ class EmploymentService {
             employeeId,
             name,
             status,
-            manager: {
-              ...checkExistedManager
-            }
+            manager: { ...checkExistedManager }
           }
         } else{
           throw new NotFoundError('Manager Not found');
@@ -152,14 +148,12 @@ class EmploymentService {
   delete(id) {
     try {
       const employeeIndex = this.findEmployee(id, true);
-
       if (employeeIndex> -1) {
         this.dataEmployees.splice(employeeIndex, 1);
         return { status: true };
       } else {
         throw new NotFoundError('Invalid employee Id supplied');
       }
-      
     } catch (error) {
       this.logger.error({ error }, `Error on delete: ${error}`);
       throw new SystemError(error.message, error.code, error.statusCode);
@@ -173,7 +167,6 @@ class EmploymentService {
    * @returns {object} response of put
    */
     put(id, args) {
-
       const {
         employeeId,
         name,
@@ -186,7 +179,6 @@ class EmploymentService {
   
         const indexEmployee = this.findEmployee(id, true);
         if (indexEmployee > -1) {
-
           const checkExistedEmployee = this.findEmployee(employeeId);
           if (checkExistedEmployee && employeeId != id) {
             throw new ConflictError('Employee already exists');
@@ -194,7 +186,6 @@ class EmploymentService {
 
           const checkExistedManager = this.findEmployee(managerId);
           if (checkExistedManager) {
-
             this.dataEmployees[indexEmployee] = {
               employeeId,
               name,
@@ -206,9 +197,7 @@ class EmploymentService {
               employeeId,
               name,
               status,
-              manager: {
-                ...checkExistedManager
-              }
+              manager: { ...checkExistedManager }
             }
           } else{
             throw new NotFoundError('Manager Not found');
